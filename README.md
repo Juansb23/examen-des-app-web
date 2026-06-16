@@ -1,7 +1,7 @@
 # examen-des-app-web
 # Coffe Time — Examen Final
 
-## Project setup
+## Projecto
 Aplicación web tipo SPA (Single Page Application) desarrollada con **Vue.js 3**, **Vue Router** y **Bootstrap 5**, conectada a una API simulada con **MockAPI**. El proyecto simula una tienda de cafetería con autenticación de usuarios, rutas protegidas y CRUD completo de **Usuarios** y **Productos**.
 
 > Examen final — Desarrollo de Aplicaciones Web y Sistemas Operativos.
