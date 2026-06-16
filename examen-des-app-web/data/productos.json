@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "nombre": "Café Americano",
+    "precio": 7000,
+    "descripcion": "Café negro clásico, intenso y aromático.",
+    "imagen": "cafe1.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Café Latte",
+    "precio": 7000,
+    "descripcion": "Suave mezcla de café con leche cremosa.",
+    "imagen": "cafe2.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Capuccino",
+    "precio": 8000,
+    "descripcion": "Espuma perfecta con toque de canela.",
+    "imagen": "cafe3.jpg"
+  },
+  {
+    "id": 4,
+    "nombre": "Café Mocca",
+    "precio": 10000,
+    "descripcion": "Café con chocolate, dulce y delicioso.",
+    "imagen": "cafe4.jpg"
+  },
+  {
+    "id": 5,
+    "nombre": "Espresso",
+    "precio": 6000,
+    "descripcion": "Café fuerte y concentrado.",
+    "imagen": "cafe5.jpg"
+  },
+  {
+    "id": 6,
+    "nombre": "Café Frappé",
+    "precio": 10000,
+    "descripcion": "Refrescante, espumoso y frío.",
+    "imagen": "cafe6.jpg"
+  },
+  {
+    "id": 7,
+    "nombre": "Café Mocaccino",
+    "precio": 11000,
+    "descripcion": "Café espresso con leche vaporizada y chocolate.",
+    "imagen": "cafe7.jpg"
+  },
+  {
+    "id": 8,
+    "nombre": "Café Flat White",
+    "precio": 12000,
+    "descripcion": "Sabor intenso a espresso con textura cremosa.",
+    "imagen": "cafe8.jpg"
+  },
+  {
+    "id": 9,
+    "nombre": "Café Prensado",
+    "precio": 10000,
+    "descripcion": "Café con cuerpo completo preparado en prensa francesa.",
+    "imagen": "cafe9.jpg"
+  },
+  {
+    "id": 10,
+    "nombre": "Chocolate Caliente",
+    "precio": 5000,
+    "descripcion": "Chocolate caliente, cremoso y delicioso.",
+    "imagen": "cafe10.jpg"
+  }
+]
