@@ -1,26 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app-shell">
+    <AppNavigation v-if="isAuthenticated" />
+    <div class="page-shell" :class="{ 'with-navigation': isAuthenticated }">
+      <AppHeader v-if="isAuthenticated" />
+      <main class="page-content">
+        <RouterView />
+      </main>
+      <AppFooter v-if="isAuthenticated" />
+    </div>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { computed } from 'vue';
+import { RouterView } from 'vue-router';
+import AppFooter from './components/AppFooter.vue';
+import AppHeader from './components/AppHeader.vue';
+import AppNavigation from './components/AppNavigation.vue';
+import { authState } from './stores/authStore';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+const isAuthenticated = computed(() => authState.isAuthenticated);
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
