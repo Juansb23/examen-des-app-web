@@ -21,11 +21,13 @@ const routes = [
     path: '/usuarios',
     name: 'users',
     component: UsersView,
+    meta: { adminOnly: true },
   },
   {
     path: '/carrito',
     name: 'cart',
     component: CartView,
+    meta: { userOnly: true },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -39,11 +41,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
+  // 1. Rutas privadas requieren autenticación
   if (!to.meta.public && !authState.isAuthenticated) {
     return { name: 'login' };
   }
 
+  // 2. Si ya está autenticado y va al login, redirigir al inicio
   if (to.name === 'login' && authState.isAuthenticated) {
+    return { name: 'products' };
+  }
+
+  // 3. Rutas marcadas como adminOnly: solo accesibles para el rol admin
+  if (to.meta.adminOnly && authState.currentUser?.rol !== 'admin') {
+    return { name: 'products' };
+  }
+
+  // 4. Rutas marcadas como userOnly: el admin no compra, así que se le
+  // redirige al catálogo si intenta acceder al carrito por URL.
+  if (to.meta.userOnly && authState.currentUser?.rol === 'admin') {
     return { name: 'products' };
   }
 

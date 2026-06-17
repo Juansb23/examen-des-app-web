@@ -5,7 +5,7 @@
         <p class="text-uppercase small fw-semibold text-secondary mb-1">Administración</p>
         <h2 class="h3 mb-0">Usuarios</h2>
       </div>
-      <button class="btn btn-coffee" type="button" @click="openCreateModal">
+      <button v-if="canManageUsers" class="btn btn-coffee" type="button" @click="openCreateModal">
         <i class="bi bi-plus-lg me-1"></i>Nuevo usuario
       </button>
     </div>
@@ -47,7 +47,7 @@
               </span>
             </td>
             <td class="text-end">
-              <div class="btn-group" role="group" :aria-label="`Acciones para ${user.nombre}`">
+              <div v-if="canManageUsers" class="btn-group" role="group" :aria-label="`Acciones para ${user.nombre}`">
                 <button class="btn btn-outline-secondary btn-sm" type="button" title="Editar" @click="openEditModal(user)">
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -55,6 +55,9 @@
                   <i class="bi bi-trash3"></i>
                 </button>
               </div>
+              <span v-else class="text-secondary small">
+                <i class="bi bi-eye me-1"></i>Solo lectura
+              </span>
             </td>
           </tr>
           <tr v-if="usersState.items.length === 0">
@@ -83,9 +86,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ConfirmModal from '../components/ConfirmModal.vue';
 import UserFormModal from '../components/UserFormModal.vue';
+import { authState } from '../stores/authStore';
 import { addUsuario, editUsuario, fetchUsuarios, removeUsuario, usersState } from '../stores/usersStore';
 
 const isFormOpen = ref(false);
@@ -95,16 +99,23 @@ const isSaving = ref(false);
 const alertMessage = ref('');
 const alertClass = ref('alert-success');
 
+// Solo el administrador puede crear, editar o eliminar usuarios.
+// Los usuarios normales tienen acceso de solo lectura (en caso de
+// llegar a esta vista por algún medio, aunque la ruta también los bloquea).
+const canManageUsers = computed(() => authState.currentUser?.rol === 'admin');
+
 onMounted(() => {
   fetchUsuarios();
 });
 
 function openCreateModal() {
+  if (!canManageUsers.value) return;
   selectedUser.value = null;
   isFormOpen.value = true;
 }
 
 function openEditModal(user) {
+  if (!canManageUsers.value) return;
   selectedUser.value = { ...user };
   isFormOpen.value = true;
 }
@@ -139,6 +150,7 @@ async function saveUser(userData) {
 }
 
 function askDelete(user) {
+  if (!canManageUsers.value) return;
   userToDelete.value = user;
 }
 

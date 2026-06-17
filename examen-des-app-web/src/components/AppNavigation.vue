@@ -18,10 +18,10 @@
           <RouterLink class="nav-link" to="/" @click="isOpen = false">
             <i class="bi bi-cup-hot-fill me-2"></i>Productos
           </RouterLink>
-          <RouterLink class="nav-link" to="/usuarios" @click="isOpen = false">
+          <RouterLink v-if="isAdmin" class="nav-link" to="/usuarios" @click="isOpen = false">
             <i class="bi bi-people-fill me-2"></i>Usuarios
           </RouterLink>
-          <RouterLink class="nav-link d-flex justify-content-between align-items-center" to="/carrito" @click="isOpen = false">
+          <RouterLink v-if="!isAdmin" class="nav-link d-flex justify-content-between align-items-center" to="/carrito" @click="isOpen = false">
             <span><i class="bi bi-cart3 me-2"></i>Carrito</span>
             <span class="badge rounded-pill text-bg-light">{{ cartItemsCount }}</span>
           </RouterLink>
@@ -35,13 +35,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import { logout } from '../stores/authStore';
+import { authState, logout } from '../stores/authStore';
 import { cartItemsCount } from '../stores/shopStore';
 
 const router = useRouter();
 const isOpen = ref(false);
+
+// Solo el administrador ve el enlace a la gestión de usuarios.
+const isAdmin = computed(() => authState.currentUser?.rol === 'admin');
 
 function handleLogout() {
   logout();

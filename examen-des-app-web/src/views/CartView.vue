@@ -5,7 +5,7 @@
         <p class="text-uppercase small fw-semibold text-secondary mb-1">Compra</p>
         <h2 class="h3 mb-0">Carrito</h2>
       </div>
-      <RouterLink class="btn btn-outline-secondary" to="/">Seguir comprando</RouterLink>
+      <RouterLink v-if="canBuy" class="btn btn-outline-secondary" to="/">Seguir comprando</RouterLink>
     </div>
 
     <div v-if="message" class="alert alert-success">{{ message }}</div>
@@ -31,7 +31,7 @@
             <span>Total</span>
             <strong>{{ formatCurrency(cartTotal) }}</strong>
           </div>
-          <button class="btn btn-coffee w-100 mt-4" type="button" @click="checkout">Comprar</button>
+          <button v-if="canBuy" class="btn btn-coffee w-100 mt-4" type="button" @click="checkout">Comprar</button>
         </div>
       </aside>
     </div>
@@ -39,21 +39,29 @@
     <div v-else class="empty-state text-center bg-white rounded-3 shadow-sm p-5">
       <h3 class="h4">El carrito está vacío</h3>
       <p class="text-secondary">Agrega productos del catálogo para iniciar una compra.</p>
-      <RouterLink class="btn btn-coffee" to="/">Ver productos</RouterLink>
+      <RouterLink v-if="canBuy" class="btn btn-coffee" to="/">Ver productos</RouterLink>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import CartItem from '../components/CartItem.vue';
+import { authState } from '../stores/authStore';
 import { addToCart, cartTotal, clearCart, decrementCartItem, removeCartItem, shopState } from '../stores/shopStore';
 import { formatCurrency } from '../utils/format';
 
 const message = ref('');
 
+// Solo los usuarios con rol 'user' realizan compras.
+// El admin gestiona el catálogo pero no compra, así que los
+// botones de acción de compra se ocultan como defensa en profundidad
+// (aunque la ruta /carrito ya lo bloquea a nivel del router).
+const canBuy = computed(() => authState.currentUser?.rol !== 'admin');
+
 function checkout() {
+  if (!canBuy.value) return;
   clearCart();
   message.value = 'Gracias por tu compra en Coffe Time.';
 }
